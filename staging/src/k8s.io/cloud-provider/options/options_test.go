@@ -83,6 +83,7 @@ func TestDefaultFlags(t *testing.T) {
 			KubeCloudSharedConfiguration: &cpconfig.KubeCloudSharedConfiguration{
 				RouteReconciliationPeriod: metav1.Duration{Duration: 10 * time.Second},
 				NodeMonitorPeriod:         metav1.Duration{Duration: 5 * time.Second},
+				InstanceExistsGracePeriod: metav1.Duration{}, // zero
 				ClusterName:               "kubernetes",
 				ClusterCIDR:               "",
 				AllocateNodeCIDRs:         false,
@@ -201,6 +202,7 @@ func TestAddFlags(t *testing.T) {
 		"--use-service-account-credentials=false",
 		"--concurrent-node-syncs=5",
 		"--webhooks=foo,bar,-baz",
+		"--instance-exists-grace-period=30s",
 	}
 	err = fs.Parse(args)
 	if err != nil {
@@ -242,6 +244,7 @@ func TestAddFlags(t *testing.T) {
 			KubeCloudSharedConfiguration: &cpconfig.KubeCloudSharedConfiguration{
 				RouteReconciliationPeriod: metav1.Duration{Duration: 30 * time.Second},
 				NodeMonitorPeriod:         metav1.Duration{Duration: 5 * time.Second},
+				InstanceExistsGracePeriod: metav1.Duration{Duration: 30 * time.Second},
 				ClusterName:               "k8s",
 				ClusterCIDR:               "1.2.3.4/24",
 				AllocateNodeCIDRs:         true,
@@ -409,6 +412,7 @@ func TestCreateConfig(t *testing.T) {
 			KubeCloudShared: cpconfig.KubeCloudSharedConfiguration{
 				RouteReconciliationPeriod: metav1.Duration{Duration: 30 * time.Second},
 				NodeMonitorPeriod:         metav1.Duration{Duration: 5 * time.Second},
+				InstanceExistsGracePeriod: metav1.Duration{}, // zero
 				ClusterName:               "k8s",
 				ClusterCIDR:               "1.2.3.4/24",
 				AllocateNodeCIDRs:         true,
@@ -550,6 +554,7 @@ func TestCreateConfigWithoutWebHooks(t *testing.T) {
 			KubeCloudShared: cpconfig.KubeCloudSharedConfiguration{
 				RouteReconciliationPeriod: metav1.Duration{Duration: 30 * time.Second},
 				NodeMonitorPeriod:         metav1.Duration{Duration: 5 * time.Second},
+				InstanceExistsGracePeriod: metav1.Duration{}, // zero
 				ClusterName:               "k8s",
 				ClusterCIDR:               "1.2.3.4/24",
 				AllocateNodeCIDRs:         true,
